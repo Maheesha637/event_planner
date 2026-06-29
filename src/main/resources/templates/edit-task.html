@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container" style="max-width: 520px; margin: 0 auto; padding-top: 40px;">
+    <div class="page-header" style="text-align: center;">
+        <h1>Edit Task Details</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Update task information</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{'/events/' + ${eventId} + '/tasks/' + ${task.taskID} + '/update'}" th:object="${task}" method="post" class="theme">
+            <label for="description">Description</label>
+            <input type="text" id="description" th:field="*{description}" required>
+
+            <label for="deadline">Deadline</label>
+            <input type="date" id="deadline" th:field="*{deadline}" required>
+
+            <button type="submit" style="width: 100%; margin-top: 24px;">Update Task</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <a th:href="@{'/events/' + ${eventId} + '/tasks'}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Task List</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

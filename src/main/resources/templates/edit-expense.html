@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Expense</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container" style="max-width: 520px; margin: 0 auto; padding-top: 40px;">
+    <div class="page-header" style="text-align: center;">
+        <h1>Edit Expense</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Update expense information</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{'/events/' + ${eventId} + '/budget/expense/' + ${expense.expenseID} + '/update'}" th:object="${expense}" method="post" class="theme">
+            <label for="description">Description</label>
+            <input type="text" id="description" th:field="*{description}" required>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label for="amount">Amount ($)</label>
+                    <input type="number" id="amount" th:field="*{amount}" required step="0.01">
+                </div>
+                <div>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" th:field="*{date}" required>
+                </div>
+            </div>
+
+            <button type="submit" style="width: 100%; margin-top: 24px;">Update Expense</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <a th:href="@{'/events/' + ${eventId} + '/budget'}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Budget</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Budget</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+    /* Navigation Bar Styles */
+    .navbar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #1e293b;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .navbar-brand:hover {
+      color: #3b82f6;
+    }
+
+    .navbar-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+
+    .navbar-center {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: 500;
+      font-size: 0.875rem;
+      background: #dbeafe;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-nav-item:hover {
+      background: #bfdbfe;
+    }
+
+    .navbar-nav-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar-user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+
+    .navbar-user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .navbar-dropdown {
+      position: relative;
+    }
+
+    .navbar-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-dropdown-toggle:hover {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .navbar-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      z-index: 1001;
+      display: none;
+      margin-top: 8px;
+    }
+
+    .navbar-dropdown:hover .navbar-dropdown-menu {
+      display: block;
+    }
+
+    .navbar-dropdown-menu a {
+      display: block;
+      padding: 12px 16px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-dropdown-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .navbar-dropdown-menu a:hover {
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    .navbar-dropdown-menu a.logout {
+      color: #dc2626;
+    }
+
+    .navbar-dropdown-menu a.logout:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    /* Mobile Navigation */
+    @media (max-width: 768px) {
+      .navbar-content {
+        padding: 0 16px;
+      }
+      
+      .navbar-center {
+        display: none;
+      }
+      
+      .navbar-user-info {
+        display: none;
+      }
+      
+      .navbar-brand {
+        font-size: 1.125rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- Brand/Logo -->
+    <a th:href="@{/events}" class="navbar-brand">
+      <div class="navbar-brand-icon">EP</div>
+      Event Planner
+    </a>
+
+    <!-- Center Navigation -->
+    <div class="navbar-center" th:if="${user != null}">
+      <a th:href="@{'/events/' + ${eventId} + '/budget'}" class="navbar-nav-item">
+        <svg class="navbar-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1V23M17 5H9.5C8.11929 5 7 6.11929 7 7.5S8.11929 10 9.5 10H14.5C15.8807 10 17 11.1193 17 12.5S15.8807 15 14.5 15H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Budget
+      </a>
+    </div>
+
+    <!-- User Menu -->
+    <div class="navbar-user" th:if="${user != null}">
+      <div class="navbar-user-info">
+        <div class="navbar-user-avatar" th:text="${#strings.substring(user.firstName, 0, 1) + #strings.substring(user.lastName, 0, 1)}"></div>
+        <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+      </div>
+      
+      <div class="navbar-dropdown">
+        <a href="#" class="navbar-dropdown-toggle">
+          <span>▼</span>
+        </a>
+        <div class="navbar-dropdown-menu">
+          <a th:href="@{/events}">Dashboard</a>
+          <a th:href="@{/admin/global-vendors}" th:if="${user != null and user.authorities[0].authority == 'ROLE_ADMIN'}">Global Vendors</a>
+          <a th:href="@{/logout}" class="logout">Sign Out</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login/Register for non-authenticated users -->
+    <div class="navbar-user" th:if="${user == null}">
+      <a th:href="@{/login}" class="action-btn">Sign In</a>
+      <a th:href="@{/register}" class="action-btn" style="background: #f1f5f9; color: #475569;">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Budget Management</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Event: <span th:text="${eventName}"></span></p>
+    </div>
+
+    <div th:if="${error}" th:text="${error}" style="color:red"></div>
+    <div th:if="${success}" th:text="${success}" style="color:green"></div>
+
+    <!-- Show budget creation form only if no budget exists -->
+    <div class="card" th:if="${!hasBudget}">
+        <h2>Create Budget</h2>
+        <form th:action="@{'/events/' + ${eventId} + '/budget'}" th:object="${budget}" method="post" class="theme">
+            <label for="theme">Theme</label>
+            <input type="text" id="theme" th:field="*{theme}" required>
+
+            <label for="totalBudget">Total Budget ($)</label>
+            <input type="number" id="totalBudget" th:field="*{totalBudget}" step="0.01" required>
+
+            <button type="submit">Create Budget</button>
+        </form>
+    </div>
+
+    <!-- Show budget details and expense form if budget exists -->
+    <div th:if="${hasBudget}">
+        <div class="card">
+            <h2>Budget Overview</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+                <div>
+                    <strong style="color: #475569; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Theme</strong>
+                    <p style="margin: 8px 0 0 0; font-size: 1.125rem; color: #1e293b;" th:text="${budget.theme}"></p>
+                </div>
+                <div>
+                    <strong style="color: #475569; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Total Budget</strong>
+                    <p style="margin: 8px 0 0 0; font-size: 1.125rem; color: #1e293b;">$<span th:text="${budget.totalBudget}"></span></p>
+                </div>
+                <div>
+                    <strong style="color: #475569; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Amount Spent</strong>
+                    <p style="margin: 8px 0 0 0; font-size: 1.125rem; color: #dc2626;">$<span th:text="${budget.achievement}"></span></p>
+                </div>
+                <div>
+                    <strong style="color: #475569; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Remaining</strong>
+                    <p style="margin: 8px 0 0 0; font-size: 1.125rem; color: #059669;">$<span th:text="${budget.totalBudget - budget.achievement}"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Add New Expense</h2>
+            <form th:action="@{'/events/' + ${eventId} + '/budget/expense'}" th:object="${expense}" method="post" class="theme">
+                <label for="description">Description</label>
+                <input type="text" id="description" th:field="*{description}" required>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div>
+                        <label for="amount">Amount ($)</label>
+                        <input type="number" id="amount" th:field="*{amount}" step="0.01" required>
+                    </div>
+                    <div>
+                        <label for="date">Date</label>
+                        <input type="date" id="date" th:field="*{date}" required>
+                    </div>
+                </div>
+
+                <button type="submit">Add Expense</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Expenses List</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="expense : ${expenses}">
+                    <td th:text="${expense.description}"></td>
+                    <td style="font-weight: 600; color: #dc2626;">$<span th:text="${expense.amount}"></span></td>
+                    <td th:text="${expense.date}"></td>
+                    <td>
+                        <a th:href="@{'/events/' + ${eventId} + '/budget/expense/' + ${expense.expenseID} + '/edit'}" class="action-btn edit-btn">Edit</a>
+                        <form th:action="@{'/events/' + ${eventId} + '/budget/expense/' + ${expense.expenseID} + '/delete'}" method="post" style="display:inline;">
+                            <button type="submit" class="action-btn" style="background:#fff1f2;color:#e11d48;border-color:#e11d48;" onclick="return confirm('Are you sure you want to delete this expense?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${expenses.empty}">
+                    <td colspan="4" style="text-align: center; color: #64748b; padding: 32px;">No expenses added yet</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin-top: 24px;">
+        <a th:href="@{'/events/' + ${eventId}}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Event Details</a>
+    </div>
+</div>
+</body>
+</html>

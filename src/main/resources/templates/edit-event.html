@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Event</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container" style="max-width: 520px; margin: 0 auto; padding-top: 40px;">
+    <div class="page-header" style="text-align: center;">
+        <h1>Edit Event</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Update event information</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{'/events/' + ${event.eventID} + '/update'}" th:object="${event}" method="post" class="theme">
+            <label for="name">Event Name</label>
+            <input type="text" id="name" th:field="*{name}" required>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label for="date">Event Date</label>
+                    <input type="date" id="date" th:field="*{date}" required>
+                </div>
+                <div>
+                    <label for="type">Event Type</label>
+                    <input type="text" id="type" th:field="*{type}" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label for="status">Status</label>
+                    <input type="text" id="status" th:field="*{status}">
+                </div>
+                <div>
+                    <label for="location">Location</label>
+                    <input type="text" id="location" th:field="*{location}">
+                </div>
+            </div>
+
+            <button type="submit" style="width: 100%; margin-top: 24px;">Update Event</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <a th:href="@{'/events'}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Events List</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

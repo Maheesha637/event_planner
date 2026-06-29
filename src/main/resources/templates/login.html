@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+  <style>
+    /* Navigation Bar Styles */
+    .navbar {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #1e293b;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .navbar-brand:hover {
+      color: #3b82f6;
+    }
+
+    .navbar-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.125rem;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-nav li {
+      margin: 0;
+    }
+
+    .navbar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #64748b;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-nav a:hover {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .navbar-nav a.active {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .navbar-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar-user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+
+    .navbar-user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .navbar-dropdown {
+      position: relative;
+    }
+
+    .navbar-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #fff;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-dropdown-toggle:hover {
+      border-color: #cbd5e1;
+      color: #1e293b;
+    }
+
+    .navbar-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      z-index: 1001;
+      display: none;
+    }
+
+    .navbar-dropdown:hover .navbar-dropdown-menu {
+      display: block;
+    }
+
+    .navbar-dropdown-menu a {
+      display: block;
+      padding: 12px 16px;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.2s ease;
+    }
+
+    .navbar-dropdown-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .navbar-dropdown-menu a:hover {
+      background: #f8fafc;
+      color: #1e293b;
+    }
+
+    .navbar-dropdown-menu a.logout {
+      color: #dc2626;
+    }
+
+    .navbar-dropdown-menu a.logout:hover {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    /* Mobile Navigation */
+    @media (max-width: 768px) {
+      .navbar-content {
+        padding: 0 16px;
+      }
+      
+      .navbar-nav {
+        display: none;
+      }
+      
+      .navbar-user-info {
+        display: none;
+      }
+      
+      .navbar-brand {
+        font-size: 1.125rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- Brand/Logo -->
+    <a th:href="@{/events}" class="navbar-brand">
+      <div class="navbar-brand-icon">EP</div>
+      Event Planner
+    </a>
+
+    <!-- Navigation Links -->
+    <ul class="navbar-nav" th:if="${user != null}">
+      <li>
+        <a th:href="@{/events}">
+          📅 Events
+        </a>
+      </li>
+      <li th:if="${user != null and user.authorities[0].authority == 'ROLE_ADMIN'}">
+        <a th:href="@{/admin/dashboard}">
+          ⚙️ Admin
+        </a>
+      </li>
+    </ul>
+
+    <!-- Login/Register for non-authenticated users -->
+    <div class="navbar-user">
+      <a th:href="@{/login}" class="action-btn">Sign In</a>
+      <a th:href="@{/register}" class="action-btn" style="background: #f1f5f9; color: #475569;">Sign Up</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" style="max-width: 480px; margin: 0 auto; padding-top: 60px;">
+    <div class="page-header" style="text-align: center;">
+        <h1>Welcome Back</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Sign in to your account</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/login}" method="post" class="theme">
+            <div th:if="${param.error}" style="color:#e74c3c">Invalid username or password.</div>
+            <div th:if="${param.logout}" style="color:#37b24d">You have been logged out.</div>
+            <div th:if="${param.success}" th:text="${param.success}" style="color:#37b24d"></div>
+
+            <label for="username">Email Address</label>
+            <input type="email" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" style="width: 100%; margin-top: 24px;">Sign In</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <p style="color: #64748b; margin-bottom: 16px;">Don't have an account?</p>
+            <a href="/register" class="action-btn" style="display: inline-block;">Create Account</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

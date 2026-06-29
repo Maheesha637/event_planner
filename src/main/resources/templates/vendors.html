@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Vendors</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+        /* Navigation Bar Styles */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .navbar-brand:hover {
+            color: #3b82f6;
+        }
+
+        .navbar-brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+
+        .navbar-center {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: 500;
+            font-size: 0.875rem;
+            background: #dbeafe;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-nav-item:hover {
+            background: #bfdbfe;
+        }
+
+        .navbar-nav-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .navbar-user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .navbar-user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .navbar-dropdown {
+            position: relative;
+        }
+
+        .navbar-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-dropdown-toggle:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .navbar-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            z-index: 1001;
+            display: none;
+            margin-top: 8px;
+        }
+
+        .navbar-dropdown:hover .navbar-dropdown-menu {
+            display: block;
+        }
+
+        .navbar-dropdown-menu a {
+            display: block;
+            padding: 12px 16px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .navbar-dropdown-menu a:hover {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 16px;
+            }
+
+            .navbar-center {
+                display: none;
+            }
+
+            .navbar-user-info {
+                display: none;
+            }
+
+            .navbar-brand {
+                font-size: 1.125rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Brand/Logo -->
+        <a th:href="@{/events}" class="navbar-brand">
+            <div class="navbar-brand-icon">EP</div>
+            Event Planner
+        </a>
+
+        <!-- Center Navigation -->
+        <div class="navbar-center" th:if="${user != null}">
+            <a th:href="@{'/events/' + ${eventId} + '/vendors'}" class="navbar-nav-item">
+                <svg class="navbar-nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 21H21M5 21V7L12 3L19 7V21M9 9V17M15 9V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Vendors
+            </a>
+        </div>
+
+        <!-- User Menu -->
+        <div class="navbar-user" th:if="${user != null}">
+            <div class="navbar-user-info">
+                <div class="navbar-user-avatar" th:text="${#strings.substring(user.firstName, 0, 1) + #strings.substring(user.lastName, 0, 1)}"></div>
+                <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+            </div>
+
+            <div class="navbar-dropdown">
+                <a href="#" class="navbar-dropdown-toggle">
+                    <span>▼</span>
+                </a>
+                <div class="navbar-dropdown-menu">
+                    <a th:href="@{/events}">Dashboard</a>
+                    <a th:href="@{/admin/global-vendors}" th:if="${user != null and user.authorities[0].authority == 'ROLE_ADMIN'}">Global Vendors</a>
+                    <a th:href="@{/logout}" class="logout">Sign Out</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login/Register for non-authenticated users -->
+        <div class="navbar-user" th:if="${user == null}">
+            <a th:href="@{/login}" class="action-btn">Sign In</a>
+            <a th:href="@{/register}" class="action-btn" style="background: #f1f5f9; color: #475569;">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Vendor Management</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Event: <span th:text="${eventName}"></span></p>
+    </div>
+
+    <div th:if="${error}" th:text="${error}" style="color:red"></div>
+    <div th:if="${success}" th:text="${success}" style="color:green"></div>
+
+    <div class="card">
+        <h2>Add New Vendor</h2>
+        <form th:action="@{'/events/' + ${eventId} + '/vendors'}" th:object="${vendor}" method="post" class="theme">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label for="name">Vendor Name</label>
+                    <input type="text" id="name" th:field="*{name}" required>
+                </div>
+                <div>
+                    <label for="category">Category</label>
+                    <select id="category" th:field="*{category}" required>
+                        <option value="">Select Category</option>
+                        <option value="Catering">Catering</option>
+                        <option value="Photography">Photography</option>
+                        <option value="Venue">Venue</option>
+                        <option value="Music/DJ">Music/DJ</option>
+                        <option value="Decorations">Decorations</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Security">Security</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Flowers">Flowers</option>
+                        <option value="Lighting">Lighting</option>
+                        <option value="Audio/Visual">Audio/Visual</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="description">Description</label>
+            <input type="text" id="description" th:field="*{description}">
+
+            <label for="contactDetails">Contact Details</label>
+            <input type="text" id="contactDetails" th:field="*{contactDetails}" required>
+
+            <label for="rating">Rating (0-5)</label>
+            <input type="number" id="rating" th:field="*{rating}" min="0" max="5" step="0.1">
+
+            <button type="submit">Add Vendor</button>
+        </form>
+    </div>
+
+    <!-- Global Vendors section (new) -->
+    <div class="card" th:if="${globalVendors != null && !globalVendors.isEmpty()}">
+        <h2>Global Vendors</h2>
+        <p style="color: #64748b; margin-top: -8px;">Select a global vendor to add it to this event</p>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Contact</th>
+                <th>Rating</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="gvendor : ${globalVendors}">
+                <td th:text="${gvendor.name}"></td>
+                <td th:text="${gvendor.category}"></td>
+                <td th:text="${gvendor.description}"></td>
+                <td th:text="${gvendor.contactDetails}"></td>
+                <td th:text="${gvendor.rating != null ? gvendor.rating : 'N/A'}"></td>
+                <td>
+                    <form th:action="@{'/events/' + ${eventId} + '/vendors/global/' + ${gvendor.globalVendorID} + '/add'}" method="post" style="display:inline;">
+                        <button type="submit" class="action-btn">Add</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>Vendor List</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Contact Details</th>
+                <th>Rating</th>
+                <th>Amount</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="vendor : ${vendors}">
+                <td th:text="${vendor.name}"></td>
+                <td th:text="${vendor.category}"></td>
+                <td th:text="${vendor.description}"></td>
+                <td th:text="${vendor.contactDetails}"></td>
+                <td>
+                    <span th:if="${vendor.rating != null}" style="color: #f59e0b; font-weight: 600;">⭐ <span th:text="${vendor.rating}"></span></span>
+                    <span th:if="${vendor.rating == null}" style="color: #9ca3af;">No rating</span>
+                </td>
+                <td>
+                    <span th:if="${vendor.contracts.size() > 0}" style="font-weight: 600; color: #059669;">$<span th:text="${vendor.contracts[vendor.contracts.size()-1].paymentAmount}"></span></span>
+                    <span th:if="${vendor.contracts.size() == 0}" style="color: #9ca3af;">N/A</span>
+                </td>
+                <!-- Payment status column: show latest contract paymentStatus if exists -->
+                <td>
+                    <span th:if="${vendor.contracts.size() > 0}">
+                        <!-- Paid -->
+                        <span th:if="${vendor.contracts[vendor.contracts.size()-1].paymentStatus == 'Paid'}" class="badge completed" th:text="${vendor.contracts[vendor.contracts.size()-1].paymentStatus}"></span>
+                        <!-- Pending or Overdue -->
+                        <span th:if="${vendor.contracts[vendor.contracts.size()-1].paymentStatus == 'Pending'}" class="badge pending" th:text="${vendor.contracts[vendor.contracts.size()-1].paymentStatus}"></span>
+                        <span th:if="${vendor.contracts[vendor.contracts.size()-1].paymentStatus == 'Overdue'}" class="badge pending" th:text="${vendor.contracts[vendor.contracts.size()-1].paymentStatus}"></span>
+                        <!-- Partial -->
+                        <span th:if="${vendor.contracts[vendor.contracts.size()-1].paymentStatus == 'Partial'}" class="badge in-progress" th:text="${vendor.contracts[vendor.contracts.size()-1].paymentStatus}"></span>
+                        <!-- Fallback for any other status -->
+                        <span th:if="${vendor.contracts[vendor.contracts.size()-1].paymentStatus != 'Paid' and vendor.contracts[vendor.contracts.size()-1].paymentStatus != 'Pending' and vendor.contracts[vendor.contracts.size()-1].paymentStatus != 'Partial' and vendor.contracts[vendor.contracts.size()-1].paymentStatus != 'Overdue'}" th:text="${vendor.contracts[vendor.contracts.size()-1].paymentStatus}"></span>
+                    </span>
+                    <span th:if="${vendor.contracts.size() == 0}" style="color: #9ca3af;">No contract</span>
+                </td>
+
+                <td>
+                    <a th:href="@{'/events/' + ${eventId} + '/vendors/' + ${vendor.vendorID} + '/contract/create'}" class="action-btn" title="Contract">Contract</a>
+                    <a th:href="@{'/events/' + ${eventId} + '/vendors/' + ${vendor.vendorID} + '/edit'}" class="action-btn edit-btn" title="Edit">Edit</a>
+                    <form th:action="@{'/events/' + ${eventId} + '/vendors/' + ${vendor.vendorID} + '/remove'}" method="post" style="display:inline;">
+                        <button type="submit" class="action-btn" style="background:#fff1f2;color:#e11d48;border-color:#e11d48;" onclick="return confirm('Are you sure you want to remove this vendor?');">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${vendors.empty}">
+                <td colspan="8" style="text-align: center; color: #64748b; padding: 32px;">No vendors added yet</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 24px;">
+        <a th:href="@{'/events/' + ${eventId}}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Event Details</a>
+    </div>
+</div>
+</body>
+</html>

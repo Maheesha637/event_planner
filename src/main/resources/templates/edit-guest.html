@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Guest</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="container" style="max-width: 520px; margin: 0 auto; padding-top: 40px;">
+    <div class="page-header" style="text-align: center;">
+        <h1>Edit Guest Details</h1>
+        <p style="color: #64748b; margin-bottom: 0;">Update guest information</p>
+    </div>
+
+    <div class="card">
+        <form th:action="@{'/events/' + ${eventId} + '/guests/' + ${guest.guestID} + '/update'}" th:object="${guest}" method="post" class="theme">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" th:field="*{firstName}" required>
+                </div>
+                <div>
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" th:field="*{lastName}" required>
+                </div>
+            </div>
+
+            <label for="contactDetails">Contact Details</label>
+            <input type="text" id="contactDetails" th:field="*{contactDetails}">
+
+            <button type="submit" style="width: 100%; margin-top: 24px;">Update Guest</button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 24px;">
+            <a th:href="@{'/events/' + ${eventId} + '/guests'}" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px;">← Back to Guest List</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
