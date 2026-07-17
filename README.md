@@ -1,89 +1,72 @@
-# 🎉 Event Planner
+# Movie Rental and Review Platform
 
-## 📖 Overview
-Event Planner is a full-stack Event Planning and Management System developed to simplify event organization. The system allows users to manage events, guest lists, venues, schedules, and notifications through a user-friendly interface.
+## Overview
 
----
+The Movie Rental and Review Platform is a full-stack web application designed to provide users with a seamless experience for browsing, renting, and reviewing movies. The platform integrates secure payment processing, user authentication, rental management, and customer reviews to deliver a reliable and user-friendly solution.
 
-## ✨ Features
-- Event Creation and Management
-- Guest List Management
-- Attendee Registration
-- Venue Management
-- Event Scheduling
-- Notifications
-- User Authentication
+## Features
+
+- User Registration and Authentication
+- Movie Catalog Management
+- Movie Rental Management
+- Secure Payment Processing
+- Customer Review and Rating System
+- Rental History Tracking
 - Responsive User Interface
 
----
+## My Contribution
 
-## 👩‍💻 My Contribution
-I was responsible for the **Guest List Management** module.
+I was responsible for developing the **Payment Management** module.
 
 My responsibilities included:
-- Add new guests
-- Update guest information
-- Delete guest records
-- View and search guest details
-- Manage attendee information efficiently
 
----
+- Designed and implemented secure payment processing functionality.
+- Developed Create, Read, Update, and Delete (CRUD) operations for payment records.
+- Managed transaction records and payment history.
+- Validated payment information before processing transactions.
+- Integrated the payment module with the movie rental workflow.
+- Improved transaction reliability and overall user experience.
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 ### Backend
 - Java
-- Spring Boot
-
-### Database
-- MySQL
+- Java Servlets
+- JSP
 
 ### Frontend
 - HTML
 - CSS
 - JavaScript
 
-### Tools
+### Database
+- MySQL
+
+### Development Tools
+- Apache Tomcat
 - Git
 - GitHub
-- Maven
-- IntelliJ IDEA
+- Eclipse IDE
 
----
+## Installation
 
-## 🚀 Installation
+1. Clone the repository.
+2. Import the project into Eclipse IDE.
+3. Configure Apache Tomcat.
+4. Create the MySQL database.
+5. Update the database configuration.
+6. Build and run the application.
 
-1. Clone the repository
+## Project Modules
 
-```bash
-git clone https://github.com/Maheesha637/event_planner.git
-```
+- User Management
+- Movie Management
+- Rental Management
+- Payment Management
+- Review and Rating Management
+- Feedback Management
 
-2. Open the project in IntelliJ IDEA.
-
-3. Configure the MySQL database.
-
-4. Update the `application.properties` file with your database credentials.
-
-5. Run the Spring Boot application.
-
----
-
-## 📂 Project Structure
-
-```
-src/
- ├── controller
- ├── model
- ├── repository
- ├── service
- ├── templates
- └── resources
-```
-
----
-
-## 📧 Author
+## Author
 
 **Sanduni Maheesha I.W.**
 
